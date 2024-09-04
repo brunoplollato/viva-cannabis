@@ -1,0 +1,56 @@
+import { Chip } from "@nextui-org/react";
+import React from "react";
+import { DeleteUser } from "../users/delete-user";
+import { EditUser } from "../users/edit-user";
+
+interface Props {
+  user: any;
+  columnKey: string | React.Key;
+}
+
+export const RenderCell = ({ user, columnKey }: Props) => {
+  // @ts-ignore
+  const cellValue = user[columnKey];
+  switch (columnKey) {
+    case "username":
+      return (
+        user.username
+      );
+    case "role":
+      return (
+        <div>
+          <div>
+            <span>{cellValue === 'ADMIN' ? 'Administrador' : 'Redator'}</span>
+          </div>
+        </div>
+      );
+    case "verified":
+      return (
+        <Chip
+          size="sm"
+          variant="flat"
+          color={
+            cellValue === true
+              ? "success"
+              : "danger"
+          }
+        >
+          <span className="capitalize text-xs">{cellValue ? 'Verificado' : 'Não Verificado'}</span>
+        </Chip>
+      );
+
+    case "actions":
+      return (
+        <div className="flex items-center gap-4 ">
+          <div>
+            <EditUser user={user} />
+          </div>
+          <div>
+            <DeleteUser id={user.id} />
+          </div>
+        </div>
+      );
+    default:
+      return cellValue;
+  }
+};

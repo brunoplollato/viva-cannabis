@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id         String    @id @unique @default(uuid())
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+  username   String    
+  phone      String    
+  email      String    @unique
+  password   String
+  role       Role      @default(REDATOR)
+  verified   Boolean   @default(false)
+  Posts      Posts[]
+}
+
+model Posts {
+  id           String     @id @unique @default(uuid())
+  title        String
+  image        String
+  content      String
+  published    Boolean    @default(false)
+  created_at   DateTime?  @default(now())
+  updated_at   DateTime?  @default(now())
+  author       Users      @relation(fields: [usersId], references: [id])
+  category     Categories @relation(fields: [categoriesId], references: [id])
+  tags         String[]
+  usersId      String
+  categoriesId String
+}
+
+model Categories {
+  id          String    @id @unique @default(uuid())
+  created_at  DateTime? @default(now())
+  updated_at  DateTime? @default(now())
+  title       String    @unique
+  description String?
+  Posts       Posts[]
+}
+
+model Services {
+  id          String    @id @unique @default(uuid())
+  created_at  DateTime? @default(now())
+  updated_at  DateTime? @default(now())
+  title       String    @unique
+  description String
+  icon        String
+}
+
+model AboutCards {
+  id          String    @id @unique @default(uuid())
+  created_at  DateTime? @default(now())
+  updated_at  DateTime? @default(now())
+  title       String    @unique
+  description String
+  icon        String
+}
+
+enum Role {
+  ADMIN
+  REDATOR
+}
