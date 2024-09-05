@@ -29,7 +29,7 @@ const roles = [
   { key: "REDATOR", label: 'Redator' }
 ]
 
-export const AddUser = () => {
+export const AddUser = ({ update }: { update: () => void }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -46,6 +46,7 @@ export const AddUser = () => {
     const res = await UserService.create(values)
     if (!res.error) {
       onClose()
+      update()
     }
   }
 

@@ -9,7 +9,11 @@ import {
 import { columns } from "./data";
 import { RenderCell } from "./render-cell";
 
-export const TableWrapper = ({ data }: { data: any[] }) => {
+type Props = {
+  data: any[]
+}
+
+export const TableWrapper = ({ data }: Props) => {
   return (
     <div className=" w-full flex flex-col gap-4">
       <Table aria-label="Usuários">

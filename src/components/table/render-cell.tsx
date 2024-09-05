@@ -30,6 +30,25 @@ export const RenderCell = ({ user, columnKey }: Props) => {
           size="sm"
           variant="flat"
           color={
+            cellValue
+              ? "success"
+              : "danger"
+          }
+        >
+          <span className="capitalize text-xs">
+            {cellValue
+              ? "verificado"
+              : "não verificado"
+            }
+          </span>
+        </Chip>
+      );
+    case "verified":
+      return (
+        <Chip
+          size="sm"
+          variant="flat"
+          color={
             cellValue === true
               ? "success"
               : "danger"
