@@ -23,7 +23,12 @@ export const Users = ({ data }: { data: UserProps[] }) => {
   const onChange: ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
     setTimeout(() => {
       if (e.target.value.length >= 3) {
-        const filteredUsers = data.filter(item => item.username.includes(e.target.value) || item.email.includes(e.target.value) || item.phone.includes(e.target.value) || item.role.toLowerCase().includes(e.target.value.toLowerCase()))
+        const filteredUsers = data.filter(
+          item => item.username.toLowerCase().includes(e.target.value.toLowerCase()) ||
+            item.email.includes(e.target.value) ||
+            item.phone.includes(e.target.value) ||
+            item.role.toLowerCase().includes(e.target.value.toLowerCase())
+        )
         setUsers(filteredUsers)
       } else if (e.target.value.length === 0) {
         setUsers(data)

@@ -1,3 +1,4 @@
+import { UserProps } from "@/types/DTO";
 import { Chip } from "@nextui-org/react";
 import React from "react";
 import { DeleteUser } from "../users/delete-user";
@@ -6,9 +7,11 @@ import { EditUser } from "../users/edit-user";
 interface Props {
   user: any;
   columnKey: string | React.Key;
+  loggedUser: UserProps;
 }
 
-export const RenderCell = ({ user, columnKey }: Props) => {
+export const RenderCell = ({ user, columnKey, loggedUser }: Props) => {
+  console.log("🚀 ~ RenderCell ~ loggedUser:", loggedUser)
   // @ts-ignore
   const cellValue = user[columnKey];
   switch (columnKey) {
@@ -64,9 +67,11 @@ export const RenderCell = ({ user, columnKey }: Props) => {
           <div>
             <EditUser user={user} />
           </div>
-          <div>
-            <DeleteUser id={user.id} />
-          </div>
+          {user.id !== loggedUser.id && (
+            <div>
+              <DeleteUser id={user.id} />
+            </div>
+          )}
         </div>
       );
     default:

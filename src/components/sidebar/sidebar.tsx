@@ -1,3 +1,4 @@
+import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import HeroIcon from "../heroIcon";
 import { AccountsIcon } from "../icons/sidebar/accounts-icon";
@@ -16,6 +17,8 @@ import { Sidebar } from "./sidebar.styles";
 
 export const SidebarWrapper = () => {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const user = session?.user;
   const { collapsed, setCollapsed } = useSidebarContext();
 
   return (
@@ -40,12 +43,14 @@ export const SidebarWrapper = () => {
               href="/dashboard"
             />
             <SidebarMenu title="Menu Principal">
-              <SidebarItem
-                isActive={pathname === "/dashboard/users"}
-                title="Usuários"
-                icon={<AccountsIcon />}
-                href="/dashboard/users"
-              />
+              {(user && user.role === 'ADMIN') && (
+                <SidebarItem
+                  isActive={pathname === "/dashboard/users"}
+                  title="Usuários"
+                  icon={<AccountsIcon />}
+                  href="/dashboard/users"
+                />
+              )}
               <SidebarItem
                 isActive={pathname === "/dashboard/partners"}
                 title="Parceiros"

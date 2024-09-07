@@ -23,30 +23,30 @@ export const Layout = ({ children }: Props) => {
   };
 
   return (
-    <SidebarContext.Provider
-      value={{
-        collapsed: sidebarOpen,
-        setCollapsed: handleToggleSidebar,
-      }}>
-      <section className='flex'>
-        <ToastContainer
-          position="top-center"
-          autoClose={5000}
-          hideProgressBar={false}
-          closeOnClick={true}
-          pauseOnHover={true}
-          draggable={false}
-          theme="light"
-        />
-        <SidebarWrapper />
-        <SessionProvider>
+    <SessionProvider>
+      <SidebarContext.Provider
+        value={{
+          collapsed: sidebarOpen,
+          setCollapsed: handleToggleSidebar,
+        }}>
+        <section className='flex'>
+          <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            closeOnClick={true}
+            pauseOnHover={true}
+            draggable={false}
+            theme="light"
+          />
+          <SidebarWrapper />
           <NavbarWrapper>
             <Suspense fallback={<Loading />}>
               {children}
             </Suspense>
           </NavbarWrapper>
-        </SessionProvider>
-      </section>
-    </SidebarContext.Provider>
+        </section>
+      </SidebarContext.Provider>
+    </SessionProvider>
   );
 };

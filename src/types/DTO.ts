@@ -31,9 +31,13 @@ export type PostProps = {
 }[]
 
 export type UserProps = {
+  id?: string;
   username: string;
   email: string;
   role: 'ADMIN' | 'REDATOR';
   phone: string;
   verified?: boolean;
+  created_at?: Date;
+  updated_at?: Date;
+  password?: string;
 }

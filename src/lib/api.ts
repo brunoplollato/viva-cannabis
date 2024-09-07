@@ -2,11 +2,6 @@
 
 import { headers } from "next/headers";
 
-
-const headersList = headers();
-const cookie = headersList.get('cookie');
-
-
 const handleResponse = async <T>(
   response: Response,
 ): Promise<T> => {
@@ -41,6 +36,8 @@ const fetchData = async <T>(
   url: string,
   options?: RequestInit,
 ): Promise<T> => {
+  const headersList = headers();
+  const cookie = headersList.get('cookie');
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 100000);
   const defaultOptions: RequestInit = {

@@ -17,6 +17,8 @@ model Users {
   password   String
   role       Role      @default(REDATOR)
   verified   Boolean   @default(false)
+  verification_token String @default("")
+  password_reset_token String @default("")
   Posts      Posts[]
 }
 
