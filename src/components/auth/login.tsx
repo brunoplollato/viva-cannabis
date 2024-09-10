@@ -5,9 +5,12 @@ import { Button, Input } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from 'react-toastify';
 import { z } from "zod";
+import { EyeFilledIcon } from "../icons/eye-filled-icon";
+import { EyeSlashFilledIcon } from "../icons/eye-slash-filled-icon";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
 
 
@@ -19,6 +22,7 @@ const formSchema = z.object({
 
 export const Login = () => {
   const router = useRouter()
+  const [isVisible, setIsVisible] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -26,6 +30,8 @@ export const Login = () => {
       password: "",
     },
   })
+
+  const toggleVisibility = () => setIsVisible(!isVisible);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const res = await signIn("credentials", {
@@ -74,7 +80,16 @@ export const Login = () => {
                     <Input
                       variant="bordered"
                       label='Senha'
-                      type="password"
+                      type={isVisible ? "text" : "password"}
+                      endContent={
+                        <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
+                          {isVisible ? (
+                            <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                          ) : (
+                            <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                          )}
+                        </button>
+                      }
                       {...field}
                     />
                   </FormControl>

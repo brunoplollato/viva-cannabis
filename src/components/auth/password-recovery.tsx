@@ -26,6 +26,7 @@ export const PasswordRecovery = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const res = await AuthService.recovery(values.email)
+    if (!res.error) router.push('/login')
   }
 
   return (

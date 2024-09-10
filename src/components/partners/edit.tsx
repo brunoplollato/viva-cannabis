@@ -1,4 +1,3 @@
-import { UserService } from "@/services/users";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
@@ -8,63 +7,56 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  Select,
-  SelectItem,
   Tooltip,
-  useDisclosure,
+  useDisclosure
 } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
-import validator from "validator";
 import { z } from "zod";
 import { EditIcon } from "../icons/table/edit-icon";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
 
-type UserProps = {
+type PartnerProps = {
   id: string;
-  username: string;
-  email: string;
-  phone: string;
-  role: 'ADMIN' | 'REDATOR';
+  name: string;
+  occupation: string;
+  photo: string;
+}
+
+type Props = {
+  title: string;
+  partner: PartnerProps;
+  submit: (values: z.infer<typeof formSchema>, id: string) => void;
 }
 
 const formSchema = z.object({
-  username: z.string({ required_error: 'Campo obrigatório' }).min(2).max(50),
-  email: z.string().email(),
-  phone: z.string().refine(validator.isMobilePhone),
-  role: z.enum(['ADMIN', 'REDATOR'])
+  name: z.string({ required_error: 'Campo obrigatório' }).min(2).max(50),
+  occupation: z.string({ required_error: 'Campo obrigatório' }).min(2).max(50),
+  photo: z.string({ required_error: 'Campo obrigatório' }),
 })
 
-const roles = [
-  { key: "ADMIN", label: 'Administrador' },
-  { key: "REDATOR", label: 'Redator' }
-]
-
-export const EditUser = ({ user }: { user: UserProps }) => {
+export const Edit = ({ partner, submit, title }: Props) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const { id, username, email, phone, role } = user;
+  const { id, name, occupation, photo } = partner;
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    values: user,
+    values: partner,
     defaultValues: {
-      username,
-      email,
-      phone,
-      role,
+      name,
+      occupation,
+      photo,
     },
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const res = await UserService.update(values, id)
-    if (!res.error) {
-      onClose()
-    }
+    submit(values, partner.id);
+    onClose()
   }
 
   return (
     <div>
       <>
         <Tooltip
-          content="Delete user"
+          content={title}
           color="danger"
         >
           <button
@@ -83,12 +75,12 @@ export const EditUser = ({ user }: { user: UserProps }) => {
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                   <ModalHeader className="flex flex-col gap-1">
-                    Adicionar Usuário
+                    {title}
                   </ModalHeader>
                   <ModalBody>
                     <FormField
                       control={form.control}
-                      name="username"
+                      name="name"
                       render={({ field, fieldState: errors }) => {
                         return (
                           <FormItem className="w-full">
@@ -107,52 +99,16 @@ export const EditUser = ({ user }: { user: UserProps }) => {
                     />
                     <FormField
                       control={form.control}
-                      name="email"
+                      name="occupation"
                       render={({ field, fieldState: errors }) => (
                         <FormItem className="w-full">
                           <FormControl>
                             <Input
                               variant="bordered"
-                              label="Email"
+                              label="Ocupação"
                               isInvalid={!errors ? true : false}
                               {...field}
                             />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="phone"
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormControl>
-                            <Input
-                              variant="bordered"
-                              label="Telefone"
-                              {...field}
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="role"
-                      render={({ field, fieldState: errors }) => (
-                        <FormItem className="w-full">
-                          <FormControl>
-                            <Select
-                              variant="bordered"
-                              label="Função"
-                              isRequired
-                              items={roles}
-                              isInvalid={!errors ? true : false}
-                              defaultSelectedKeys={[field.value]}
-                              {...field}
-                            >
-                              {(role) => <SelectItem key={role.key}>{role.label}</SelectItem>}
-                            </Select>
                           </FormControl>
                         </FormItem>
                       )}

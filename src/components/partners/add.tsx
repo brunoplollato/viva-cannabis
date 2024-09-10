@@ -1,4 +1,3 @@
-import { UserService } from "@/services/users";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
@@ -8,45 +7,47 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  Select,
-  SelectItem,
-  useDisclosure,
+  useDisclosure
 } from "@nextui-org/react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import validator from "validator";
 import { z } from "zod";
+import Dropzone from "../dropzone";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
 
+type Props = {
+  title: string;
+  submit: (values: z.infer<typeof formSchema>, file: File) => void;
+}
+
 const formSchema = z.object({
-  username: z.string().min(2).max(50),
-  email: z.string().email(),
-  phone: z.string().refine(validator.isMobilePhone),
-  role: z.enum(['ADMIN', 'REDATOR'])
+  name: z.string().min(2).max(50),
+  occupation: z.string().min(2).max(50),
+  photo: z.string(),
 })
 
-const roles = [
-  { key: "ADMIN", label: 'Administrador' },
-  { key: "REDATOR", label: 'Redator' }
-]
-
-export const AddUser = ({ update }: { update: () => void }) => {
+export const Add = ({ submit, title }: Props) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const [file, setFile] = useState<File | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
-      email: "",
-      phone: "",
-      role: "REDATOR",
+      name: "",
+      occupation: "",
+      photo: "",
     },
   })
 
+  const handleFile = (file: File) => {
+    form.setValue('photo', file.name)
+    setFile(file);
+  }
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const res = await UserService.create(values)
-    if (!res.error) {
+    if (file) {
+      submit(values, file);
       onClose()
-      update()
     }
   }
 
@@ -54,7 +55,7 @@ export const AddUser = ({ update }: { update: () => void }) => {
     <div>
       <>
         <Button onPress={onOpen} color="primary">
-          Adicionar Usuário
+          {title}
         </Button>
         <Modal
           isOpen={isOpen}
@@ -66,12 +67,15 @@ export const AddUser = ({ update }: { update: () => void }) => {
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                   <ModalHeader className="flex flex-col gap-1">
-                    Adicionar Usuário
+                    {title}
                   </ModalHeader>
                   <ModalBody>
+                    <div className="w-full flex justify-center">
+                      <Dropzone onFileSelect={handleFile} />
+                    </div>
                     <FormField
                       control={form.control}
-                      name="username"
+                      name="name"
                       render={({ field }) => (
                         <FormItem className="w-full">
                           <FormControl>
@@ -87,50 +91,16 @@ export const AddUser = ({ update }: { update: () => void }) => {
                     />
                     <FormField
                       control={form.control}
-                      name="email"
+                      name="occupation"
                       render={({ field }) => (
                         <FormItem className="w-full">
                           <FormControl>
                             <Input
                               variant="bordered"
-                              label="Email"
+                              label="Ocupação"
                               isRequired
                               {...field}
                             />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="phone"
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormControl>
-                            <Input
-                              variant="bordered"
-                              label="Telefone"
-                              {...field}
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="role"
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormControl>
-                            <Select
-                              variant="bordered"
-                              label="Função"
-                              isRequired
-                              items={roles}
-                              {...field}
-                            >
-                              {(role) => <SelectItem key={role.key}>{role.label}</SelectItem>}
-                            </Select>
                           </FormControl>
                         </FormItem>
                       )}

@@ -1,41 +1,33 @@
 import { UserService } from "@/services/users";
+import { UserProps } from "@/types/DTO";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Avatar,
   Button,
-  Dropdown,
   DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
   Input,
+  InputProps,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
-  NavbarItem,
   useDisclosure
 } from "@nextui-org/react";
-import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useCallback } from "react";
 import { useForm } from "react-hook-form";
+import InputMask from 'react-input-mask';
+import validator from "validator";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
-import { DarkModeSwitch } from "./darkmodeswitch";
 
 const formSchema = z.object({
   username: z.string({ required_error: 'Campo obrigatório' }).min(2).max(50),
   email: z.string().email(),
-  phone: z.string(),
+  phone: z.string().refine(validator.isMobilePhone),
 })
 
-export const UserDropdown = () => {
-  const router = useRouter();
-  const { data: session } = useSession();
-  const user = session?.user;
+export const UserProfile = ({ user }: { user: UserProps }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const { id, username, email, phone } = user || {};
+  const { id, username, email, phone } = user;
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     values: user,
@@ -53,47 +45,9 @@ export const UserDropdown = () => {
     }
   }
 
-  const handleLogout = useCallback(async () => {
-    const data = await signOut({ redirect: false, callbackUrl: "/login" })
-    router.push(data.url)
-  }, [router]);
-
   return (
     <>
-      <Dropdown>
-        <NavbarItem>
-          <DropdownTrigger>
-            <Avatar
-              as='button'
-              color='secondary'
-              size='md'
-              name="Bruno Lollato"
-            />
-          </DropdownTrigger>
-        </NavbarItem>
-        <DropdownMenu
-          aria-label='User menu actions'
-          onAction={(actionKey) => console.log({ actionKey })}>
-          <DropdownItem
-            key='role'
-            className='flex flex-col justify-start w-full items-start'>
-            <p>{user?.email}</p>
-            <p className="font-bold">{user?.role === 'ADMIN' ? 'Administrador' : 'Redator'}</p>
-          </DropdownItem>
-          <DropdownItem key='profile' onPress={onOpen}>Perfil</DropdownItem>
-          <DropdownItem key='change-password'>Trocar senha</DropdownItem>
-          <DropdownItem
-            key='logout'
-            color='danger'
-            className='text-danger'
-            onPress={handleLogout}>
-            Sair
-          </DropdownItem>
-          <DropdownItem key='switch'>
-            <DarkModeSwitch />
-          </DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
+      <DropdownItem key='profile' onPress={onOpen}>Perfil</DropdownItem>
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
@@ -148,11 +102,18 @@ export const UserDropdown = () => {
                     render={({ field }) => (
                       <FormItem className="w-full">
                         <FormControl>
-                          <Input
-                            variant="bordered"
-                            label="Telefone"
+                          <InputMask
+                            mask={'(99) 99999-9999'}
                             {...field}
-                          />
+                          >
+                            {(inputProps: InputProps) => (
+                              <Input
+                                variant="bordered"
+                                label="Telefone"
+                                {...inputProps}
+                              />
+                            )}
+                          </InputMask>
                         </FormControl>
                       </FormItem>
                     )}

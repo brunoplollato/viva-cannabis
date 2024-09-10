@@ -7,14 +7,14 @@ import {
   TableRow
 } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
-import { columns } from "./data";
-import { RenderCell } from "./render-cell";
 
 type Props = {
-  data: any[]
+  data: any[];
+  columns: any[];
+  renderCell: (row: any, columnKey: any) => any;
 }
 
-export const TableWrapper = ({ data }: Props) => {
+export const TableWrapper = ({ data, columns, renderCell }: Props) => {
   const { data: session } = useSession();
   const loggedUser = session?.user;
   return (
@@ -32,12 +32,12 @@ export const TableWrapper = ({ data }: Props) => {
               </TableColumn>
             )}
           </TableHeader>
-          <TableBody items={data}>
-            {(user) => (
+          <TableBody items={data} emptyContent={"Nenhum resultado encontrado."}>
+            {(row) => (
               <TableRow>
                 {(columnKey) => (
                   <TableCell>
-                    {RenderCell({ user: user, columnKey: columnKey, loggedUser })}
+                    {renderCell(row, columnKey)}
                   </TableCell>
                 )}
               </TableRow>

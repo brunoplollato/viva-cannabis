@@ -1,4 +1,3 @@
-import { UserService } from "@/services/users";
 import {
   Button,
   Modal,
@@ -12,11 +11,17 @@ import {
 import { useCallback } from "react";
 import { DeleteIcon } from "../icons/table/delete-icon";
 
-export const DeleteUser = ({ id }: { id: string }) => {
+type Props = {
+  submit: () => void;
+  title: string;
+  description: string;
+}
+
+export const Delete = ({ submit, title, description }: Props) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   const handleDelete = useCallback(async () => {
-    await UserService.delete(id);
+    submit();
     onClose();
   }, []);
 
@@ -24,7 +29,7 @@ export const DeleteUser = ({ id }: { id: string }) => {
     <div>
       <>
         <Tooltip
-          content="Delete user"
+          content={title}
           color="danger"
         >
           <button
@@ -42,10 +47,10 @@ export const DeleteUser = ({ id }: { id: string }) => {
             {(onClose) => (
               <>
                 <ModalHeader>
-                  Deletar usuário
+                  {title}
                 </ModalHeader>
                 <ModalBody>
-                  Você está prestes a deletar um usuário
+                  {description}
                 </ModalBody>
                 <ModalFooter className="justify-between">
                   <Button color="danger" variant="flat" onClick={onClose}>

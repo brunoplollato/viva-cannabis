@@ -34,10 +34,19 @@ export type UserProps = {
   id?: string;
   username: string;
   email: string;
-  role: 'ADMIN' | 'REDATOR';
+  role?: 'ADMIN' | 'REDATOR';
   phone: string;
   verified?: boolean;
   created_at?: Date;
   updated_at?: Date;
   password?: string;
+}
+
+export type PartnerProps = {
+  id?: string;
+  photo: string;
+  name: string;
+  occupation: string;
+  created_at?: Date;
+  updated_at?: Date;
 }
