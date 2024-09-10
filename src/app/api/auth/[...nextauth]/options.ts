@@ -26,9 +26,8 @@ const nextAuthOptions: NextAuthOptions = {
             password: credentials.password,
           };
           try {
-            const res = await fetch(
-              `${process.env.NEXT_PUBLIC_BASE_URL}/api/login?email=${userCredentials.email}&password=${userCredentials.password}`
-            );
+            const url = process.env.VERCEL_ENV ? `${process.env.VERCEL_URL}/api/login?email=${userCredentials.email}&password=${userCredentials.password}` : `${process.env.NEXT_PUBLIC_BASE_URL}/api/login?email=${userCredentials.email}&password=${userCredentials.password}`
+            const res = await fetch(url);
             const data = await res.json();
             const user = data.data
 
