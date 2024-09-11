@@ -2,7 +2,6 @@
 
 import { Button } from '@nextui-org/react'
 import { ServerOffIcon } from 'lucide-react'
-import { useEffect } from 'react'
 
 export default function Error({
   error,
@@ -11,10 +10,6 @@ export default function Error({
   error: Error & { digest?: string }
   reset: () => void
 }) {
-  useEffect(() => {
-    console.error(error)
-  }, [error])
-
   return (
     <div className='flex flex-col justify-center items-center h-[calc(100vh-64px)]'>
       <ServerOffIcon size={100} />

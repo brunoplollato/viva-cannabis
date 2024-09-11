@@ -23,10 +23,9 @@ export const AccountVerify = ({ token }: { token: string }) => {
     try {
       setIsLoading(true)
       const res: Response = await AuthService.verify(token)
-      console.log("🚀 ~ handleVerification ~ res:", res)
       setResponse(res)
     } catch (err) {
-      console.error(err)
+      throw new Error()
     }
     finally {
       setIsLoading(false)

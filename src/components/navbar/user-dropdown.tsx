@@ -72,8 +72,7 @@ export const UserDropdown = () => {
           </DropdownTrigger>
         </NavbarItem>
         <DropdownMenu
-          aria-label='User menu actions'
-          onAction={(actionKey) => console.log({ actionKey })}>
+          aria-label='User menu actions'>
           <DropdownItem
             key='role'
             className='flex flex-col justify-start w-full items-start'>
