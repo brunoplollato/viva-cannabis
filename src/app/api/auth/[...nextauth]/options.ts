@@ -30,16 +30,21 @@ const nextAuthOptions: NextAuthOptions = {
               `${process.env.NEXT_PUBLIC_BASE_URL}/api/login?email=${userCredentials.email}&password=${userCredentials.password}`
             );
             const data = await res.json();
-            console.log("🚀 ~ authorize ~ res:", res)
             const user = data.data
-
+            
             if (res.ok && user) {
               return user;
             } else {
-              return null;
+              throw new Error(JSON.stringify({
+                error: data.message,
+                status: data.status,
+                ok: false,
+                url: null
+              }));
             }
-          } catch (err) {
-            return null;
+          } catch (error: any) {
+            const str = error.stack.split('Error: ')[1].split(',')[0].split(':')[1].replaceAll('"', '')
+            throw new Error(str);
           }
         }
         return null;

@@ -24,7 +24,6 @@ export class PartnersService {
     const blob = await upload(`partners/${imageFile.name}`, imageFile, {
       access: 'public',
     })
-    console.log("🚀 ~ PartnersService ~ create ~ blob:", blob)
     const res: CreateResponse = await post('/partners/create', {
       body: data
     })

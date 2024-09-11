@@ -28,12 +28,7 @@ export async function GET(request: NextRequest) {
       delete data.password
       return NextResponse.json({message: 'Login realizado com sucesso!', data}, {status: 200});
     } else {
-      return NextResponse.json({
-        message: 'Credenciais inválidas!', data: {
-          dbPass: user?.password,
-          inputPass: hashPassword(password)
-      }}, { status: 401 })
-    }
+      return NextResponse.json({message: 'Credenciais inválidas!'}, { status: 401 })}
   } catch (error: any) {
     throw new Error(error)
   }
