@@ -4,9 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const email = await request.nextUrl.searchParams.get("email");
-  console.log("🚀 ~ GET ~ email:", email)
   const password = await request.nextUrl.searchParams.get("password");
-  console.log("🚀 ~ GET ~ password:", password)
   if (!email || !password) {
     return NextResponse.json({message: 'Email e Password são obrigatórios'}, {status: 400})
   }
@@ -25,7 +23,6 @@ export async function GET(request: NextRequest) {
       role: true
     }
     })
-    console.log("🚀 ~ GET ~ user:", user)
     if (user && user.password === hashPassword(password)) {
     const data: any = user
     delete data.password

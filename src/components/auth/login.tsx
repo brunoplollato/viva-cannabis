@@ -5,7 +5,7 @@ import { Button, Input } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from 'react-toastify';
 import { z } from "zod";
@@ -30,6 +30,10 @@ export const Login = () => {
       password: "",
     },
   })
+
+  useEffect(() => {
+    console.log("🚀 ~ useEffect ~ process.env.VERCEL_URL:", process.env.VERCEL_URL)
+  }, []);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
