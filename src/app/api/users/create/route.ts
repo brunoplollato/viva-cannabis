@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({message: 'Usuário não tem permissão!'}, {status: 401})
   }
   const {body} = await request.json();
-  var randPassword = new Array(10).fill("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz").map(x => (function(chars) { let umax = Math.pow(2, 32), r = new Uint32Array(1), max = umax - (umax % chars.length); do { crypto.getRandomValues(r); } while(r[0] > max); return chars[r[0] % chars.length]; })(x)).join('');
+  const randPassword = new Array(10).fill("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%&()?-+").map(x => ((chars) => { let umax = Math.pow(2, 32), r = new Uint32Array(1), max = umax - (umax % chars.length); do { crypto.getRandomValues(r); } while(r[0] > max); return chars[r[0] % chars.length]; })(x)).join('');
   const hashedPassword = hashPassword(randPassword)
   try {
     const user = await prisma.users.findUnique({
