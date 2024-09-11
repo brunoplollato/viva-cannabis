@@ -1,4 +1,2 @@
-
-npx lint-staged
-npm run format:prettier
-npm run build
+yarn lint-staged
+yarn build
