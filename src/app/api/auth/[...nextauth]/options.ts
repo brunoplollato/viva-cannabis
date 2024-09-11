@@ -30,6 +30,7 @@ const nextAuthOptions: NextAuthOptions = {
               `${process.env.NEXT_PUBLIC_BASE_URL}/api/login?email=${userCredentials.email}&password=${userCredentials.password}`
             );
             const data = await res.json();
+            console.log("🚀 ~ authorize ~ res:", res)
             const user = data.data
 
             if (res.ok && user) {
