@@ -33,6 +33,7 @@ export const Login = () => {
 
   useEffect(() => {
     console.log("🚀 ~ useEffect ~ process.env.VERCEL_URL:", process.env.VERCEL_URL)
+    console.log("🚀 ~ useEffect ~ process.env.RESEND_API_KEY:", process.env.RESEND_API_KEY)
   }, []);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
