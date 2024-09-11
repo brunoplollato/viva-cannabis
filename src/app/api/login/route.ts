@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({message: 'Login realizado com sucesso!', data}, {status: 200});
     } else {
       return NextResponse.json({
-        message: 'Credenciais inválidas!' data: {
+        message: 'Credenciais inválidas!', data: {
           dbPass: user?.password,
           inputPass: hashPassword(password)
       }}, { status: 401 })
