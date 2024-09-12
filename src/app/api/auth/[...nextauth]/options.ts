@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma';
+import { AuthService } from '@/services/auth';
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
@@ -26,18 +27,13 @@ const nextAuthOptions: NextAuthOptions = {
             password: credentials.password,
           };
           try {
-            const res = await fetch(
-              `${process.env.NEXT_PUBLIC_BASE_URL}/api/login?email=${userCredentials.email}&password=${userCredentials.password}`
-            );
-            const data = await res.json();
-            const user = data.data
-            
-            if (res.ok && user) {
+            const res = await AuthService.login(userCredentials.email, userCredentials.password);
+            if (!res.error) {
+              const user = await res.data;
               return user;
             } else {
               throw new Error(JSON.stringify({
-                error: data.message,
-                status: data.status,
+                error: res.message,
                 ok: false,
                 url: null
               }));

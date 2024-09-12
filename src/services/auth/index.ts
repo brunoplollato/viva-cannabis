@@ -8,6 +8,10 @@ type Response = {
 }
 
 export class AuthService {
+  static async login(email: string, password: string): Promise<any>{
+    const res: Response = await get(`/login?email=${email}&password=${password}`);
+    return res
+  }
   static async verify(token: string) {
     const res: Response = await post(`/verify`, {
       body: {
@@ -16,7 +20,7 @@ export class AuthService {
     });
     return res
   }
-  static async resendVerificationEmail(userId: string) {
+  static async resendVerificationEmail(userId: string): Promise<Response> {
     const res: Response = await get(`/verify/new/?userId=${userId}`);
     if (res.error) {
       toast.error(res.message)
@@ -25,7 +29,7 @@ export class AuthService {
     }
     return res
   }
-  static async recovery(email: string) {
+  static async recovery(email: string): Promise<Response> {
     const res: Response = await post(`/recovery`, {
       body: {
         email
@@ -38,7 +42,7 @@ export class AuthService {
     }
     return res
   }
-  static async validateToken(token: string) {
+  static async validateToken(token: string): Promise<Response> {
     const res: Response = await post(`/validate-token`, {
       body: {
         token
@@ -46,7 +50,7 @@ export class AuthService {
     });
     return res
   }
-  static async redefinePassword(token: string, password: string, confirmPassword: string) {
+  static async redefinePassword(token: string, password: string, confirmPassword: string): Promise<Response> {
     const res: Response = await put(`/users/redefine-password`, {
       body: {
         token,
