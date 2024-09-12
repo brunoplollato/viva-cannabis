@@ -39,6 +39,8 @@ export const Login = () => {
       password: values.password,
       redirect: false
     });
+    //eslint-disable-next-line
+    console.log("🚀 ~ onSubmit ~ res:", res)
     if (res?.ok) {
       toast.success('Login realizado com sucesso!');
       router.push('/dashboard')
