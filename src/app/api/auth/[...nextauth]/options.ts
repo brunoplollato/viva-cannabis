@@ -43,8 +43,7 @@ const nextAuthOptions: NextAuthOptions = {
               }));
             }
           } catch (error: any) {
-            const str = error.stack.split('Error: ')[1].split(',')[0].split(':')[1].replaceAll('"', '')
-            throw new Error(str);
+            throw new Error(error);
           }
         }
         return null;

@@ -3,6 +3,7 @@ import { HouseIcon } from "@/components/icons/breadcrumb/house-icon";
 import { UsersIcon } from "@/components/icons/breadcrumb/users-icon";
 import { PartnersService } from "@/services/partners";
 import { Input } from '@nextui-org/react';
+import { put } from '@vercel/blob';
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { ChangeEventHandler, useCallback, useState } from "react";
