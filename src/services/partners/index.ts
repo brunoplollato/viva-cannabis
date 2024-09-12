@@ -24,6 +24,8 @@ export class PartnersService {
     const blob = await update(`partners/${imageFile.name}`, imageFile, {
       access: 'public',
     })
+    //eslint-disable-next-line
+    console.log("🚀 ~ PartnersService ~ create ~ blob:", blob)
     const res: CreateResponse = await post('/partners/create', {
       body: data
     })
