@@ -41,7 +41,7 @@ export default function Dropzone({ src, onFileSelect }: Props) {
   return (
     <div className="relative inline-block group">
       <Avatar
-        src={avatarSrc || "/placeholder.svg?height=128&width=128"}
+        src={avatarSrc || "/placeholder.png?height=128&width=128"}
         className="w-32 h-32 text-large transition-opacity duration-300 group-hover:opacity-75"
       />
       <div

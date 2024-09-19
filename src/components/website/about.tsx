@@ -1,9 +1,9 @@
-import { AboutProps } from "@/types/DTO";
+import { AboutService } from "@/services/about";
 import CustomCard from "./customCard";
 import { Section, SectionContent, SectionDescription, SectionHeader, SectionTitle } from "./section";
 
-export default function About(props: { data: AboutProps }) {
-  const { data } = props;
+export default async function About() {
+  const data = await AboutService.listAll();
   return (
     <Section>
       <SectionHeader>

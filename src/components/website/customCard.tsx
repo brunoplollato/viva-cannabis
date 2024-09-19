@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import HeroIcon from "./heroIcon";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 
 type CustomCardProps = {
   icon: ReactElement,

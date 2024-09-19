@@ -4,10 +4,10 @@ import { Input } from "@nextui-org/input";
 import { useForm } from "react-hook-form";
 import validator from "validator";
 import { z } from "zod";
+import { Button } from "../ui/button";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormMessage } from "../ui/form";
 import HeroIcon from "./heroIcon";
 import { Section, SectionContent, SectionDescription, SectionHeader, SectionTitle } from "./section";
-import { Button } from "./ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormMessage } from "./ui/form";
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),

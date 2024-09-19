@@ -1,5 +1,5 @@
+import { Button } from "../ui/button";
 import { Section, SectionContent, SectionHeader, SectionTitle } from "./section";
-import { Button } from "./ui/button";
 
 export default function WorkWithUs() {
   return (

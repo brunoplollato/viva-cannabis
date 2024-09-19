@@ -1,6 +1,5 @@
 import { del, get, post, put } from "@/lib/api";
 import { PartnerProps } from "@/types/DTO";
-import { put as update } from '@vercel/blob';
 import { toast } from "react-toastify";
 
 
@@ -16,16 +15,7 @@ export class PartnersService {
     const res: PartnerProps[] = await get('/partners');
     return res
   }
-  static async create(data: PartnerProps, file: File) {
-    const today = new Date().toISOString();
-    const formData = await new FormData();
-    formData.append('photo', file, `${data.name}-${today}`);
-    const imageFile = formData.get('photo') as File;
-    const blob = await update(`partners/${imageFile.name}`, imageFile, {
-      access: 'public',
-    })
-    //eslint-disable-next-line
-    console.log("🚀 ~ PartnersService ~ create ~ blob:", blob)
+  static async create(data: PartnerProps) {
     const res: CreateResponse = await post('/partners/create', {
       body: data
     })

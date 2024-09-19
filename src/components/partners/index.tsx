@@ -1,9 +1,7 @@
 "use client";
-import { HouseIcon } from "@/components/icons/breadcrumb/house-icon";
-import { UsersIcon } from "@/components/icons/breadcrumb/users-icon";
 import { PartnersService } from "@/services/partners";
-import { Input } from '@nextui-org/react';
-import { put } from '@vercel/blob';
+import { Input, User } from '@nextui-org/react';
+import { upload } from '@vercel/blob/client';
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { ChangeEventHandler, useCallback, useState } from "react";
@@ -30,8 +28,16 @@ export const Partners = ({ data }: { data: PartnerProps[] }) => {
   }, [])
 
   const handleAdd = useCallback(async (values: PartnerProps, file: File) => {
-    const res = await PartnersService.create(values, file)
-    if (!res.error) fetchPartners()
+    const formData = await new FormData();
+    formData.append('photo', file, values.name);
+    const newBlob = await upload(`partners/${values.name}`, file, {
+      access: 'public',
+      handleUploadUrl: '/api/upload',
+    });
+    values.photo = newBlob.url;
+    const res = await PartnersService.create(values)
+    if (!res.error)
+      fetchPartners()
   }, [])
 
   const handleDelete = useCallback(async (id: string) => {
@@ -39,9 +45,17 @@ export const Partners = ({ data }: { data: PartnerProps[] }) => {
     if (!res.error) fetchPartners()
   }, [])
 
-  const handleEdit = useCallback(async (values: PartnerProps, id: string) => {
+  const handleEdit = useCallback(async (values: PartnerProps, id: string, file: File) => {
+    const formData = await new FormData();
+    formData.append('photo', file, values.name);
+    const newBlob = await upload(`partners/${values.name}`, file, {
+      access: 'public',
+      handleUploadUrl: '/api/partners/upload',
+    });
+    values.photo = newBlob.url;
     const res = await PartnersService.update(values, id)
-    if (!res.error) fetchPartners()
+    if (!res.error)
+      fetchPartners()
   }, [])
 
   const onChange: ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
@@ -64,7 +78,14 @@ export const Partners = ({ data }: { data: PartnerProps[] }) => {
     switch (columnKey) {
       case "name":
         return (
-          partner.name
+          <User
+            avatarProps={{
+              src: partner.photo,
+            }}
+            name={cellValue}
+          >
+            {partner.name}
+          </User>
         );
       case "occupation":
         return (
@@ -98,21 +119,18 @@ export const Partners = ({ data }: { data: PartnerProps[] }) => {
     <div className="my-10 px-4 lg:px-6 max-w-[95rem] mx-auto w-full flex flex-col gap-4">
       <ul className="flex">
         <li className="flex gap-2">
-          <HouseIcon />
-          <Link href={"/"}>
+          <Link href={"/dashboard"}>
             <span>Home</span>
           </Link>
           <span> / </span>{" "}
         </li>
-
         <li className="flex gap-2">
-          <UsersIcon />
-          <span>Usuários</span>
-          <span> / </span>{" "}
+          <span> </span>
+          <span> Parceiros</span>
         </li>
       </ul>
 
-      <h3 className="text-xl font-semibold">Usuários</h3>
+      <h3 className="text-xl font-semibold">Parceiros</h3>
       <div className="flex justify-between flex-wrap gap-4 items-center">
         <div className="flex items-center gap-3 flex-wrap md:flex-nowrap">
           <Input

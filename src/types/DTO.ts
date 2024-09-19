@@ -1,34 +1,49 @@
 export type ProductsProps = {
-  id: number;
+  id?: string;
   image: string;
   title: string;
   description: string;
-}[]
+  created_at?: Date;
+  updated_at?: Date;
+}
 
 export type AboutProps = {
-  id: number;
+  id?: string;
   icon: string;
   title: string;
   description: string;
-}[]
+  created_at?: Date;
+  updated_at?: Date;
+}
 
-export type ServicesProps = {
-  id: number;
+export type ServiceProps = {
+  id?: string;
   icon: string;
   title: string;
   description: string;
-}[]
+  created_at?: Date;
+  updated_at?: Date;
+}
 
 export type PostProps = {
-  id: number;
+  id?: string;
   image: string;
   title: string;
-  description: string;
-  category: string;
+  slug: string;
+  content: string;
+  published: boolean;
+  categoryId: string;
+  category?: {
+    title: string;
+  };
   tags: string[];
-  author: string;
-  createdAt: Date
-}[]
+  userId: string;
+  author?: {
+    username: string;
+  };
+  created_at?: Date;
+  updated_at?: Date;
+}
 
 export type UserProps = {
   id?: string;

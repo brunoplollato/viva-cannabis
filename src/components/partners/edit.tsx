@@ -10,8 +10,10 @@ import {
   Tooltip,
   useDisclosure
 } from "@nextui-org/react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import Dropzone from "../dropzone";
 import { EditIcon } from "../icons/table/edit-icon";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
 
@@ -25,7 +27,7 @@ type PartnerProps = {
 type Props = {
   title: string;
   partner: PartnerProps;
-  submit: (values: z.infer<typeof formSchema>, id: string) => void;
+  submit: (values: z.infer<typeof formSchema>, id: string, file: File) => void;
 }
 
 const formSchema = z.object({
@@ -35,6 +37,7 @@ const formSchema = z.object({
 })
 
 export const Edit = ({ partner, submit, title }: Props) => {
+  const [file, setFile] = useState<File | null>(null);
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { id, name, occupation, photo } = partner;
   const form = useForm<z.infer<typeof formSchema>>({
@@ -47,9 +50,16 @@ export const Edit = ({ partner, submit, title }: Props) => {
     },
   })
 
+  const handleFile = (file: File) => {
+    form.setValue('photo', file.name)
+    setFile(file);
+  }
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    submit(values, partner.id);
-    onClose()
+    if (file) {
+      submit(values, partner.id, file);
+      onClose()
+    }
   }
 
   return (
@@ -78,6 +88,9 @@ export const Edit = ({ partner, submit, title }: Props) => {
                     {title}
                   </ModalHeader>
                   <ModalBody>
+                    <div className="w-full flex justify-center">
+                      <Dropzone onFileSelect={handleFile} src={partner.photo} />
+                    </div>
                     <FormField
                       control={form.control}
                       name="name"

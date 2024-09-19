@@ -1,23 +1,11 @@
 export const columns = [
    {
       name: 'Nome',
-      uid: 'username'
+      uid: 'name'
    },
    {
-      name: 'Email',
-      uid: 'email'
-   },
-   {
-      name: 'Telefone',
-      uid: 'phone'
-   },
-   {
-      name: 'Função',
-      uid: 'role'
-   },
-   {
-      name: 'Status',
-      uid: 'verified'
+      name: 'Ocupação',
+      uid: 'occupation'
    },
    {
       name: '',

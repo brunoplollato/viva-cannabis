@@ -48,6 +48,7 @@ export const Add = ({ submit, title }: Props) => {
     if (file) {
       submit(values, file);
       onClose()
+      form.reset();
     }
   }
 

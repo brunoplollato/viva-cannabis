@@ -17,13 +17,14 @@ CREATE TABLE "Users" (
 CREATE TABLE "Posts" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "published" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "tags" TEXT[],
-    "usersId" TEXT NOT NULL,
-    "categoriesId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "categorysId" TEXT NOT NULL,
 
     CONSTRAINT "Posts_pkey" PRIMARY KEY ("id")
 );
@@ -91,7 +92,7 @@ CREATE UNIQUE INDEX "AboutCards_id_key" ON "AboutCards"("id");
 CREATE UNIQUE INDEX "AboutCards_title_key" ON "AboutCards"("title");
 
 -- AddForeignKey
-ALTER TABLE "Posts" ADD CONSTRAINT "Posts_usersId_fkey" FOREIGN KEY ("usersId") REFERENCES "Users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Posts" ADD CONSTRAINT "Posts_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Posts" ADD CONSTRAINT "Posts_categoriesId_fkey" FOREIGN KEY ("categoriesId") REFERENCES "Categories"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Posts" ADD CONSTRAINT "Posts_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Categories"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

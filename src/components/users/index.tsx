@@ -1,6 +1,4 @@
 "use client";
-import { HouseIcon } from "@/components/icons/breadcrumb/house-icon";
-import { UsersIcon } from "@/components/icons/breadcrumb/users-icon";
 import { UserService } from "@/services/users";
 import { UserProps } from "@/types/DTO";
 import { Chip, Input } from '@nextui-org/react';
@@ -132,17 +130,14 @@ export const Users = ({ data }: { data: UserProps[] }) => {
     <div className="my-10 px-4 lg:px-6 max-w-[95rem] mx-auto w-full flex flex-col gap-4">
       <ul className="flex">
         <li className="flex gap-2">
-          <HouseIcon />
-          <Link href={"/"}>
+          <Link href={"/dashboard"}>
             <span>Home</span>
           </Link>
           <span> / </span>{" "}
         </li>
-
         <li className="flex gap-2">
-          <UsersIcon />
+          <span> </span>
           <span>Usuários</span>
-          <span> / </span>{" "}
         </li>
       </ul>
 

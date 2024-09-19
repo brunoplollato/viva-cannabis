@@ -1,6 +1,6 @@
+import { ChartNoAxesGantt, Newspaper } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import HeroIcon from "../heroIcon";
 import { AccountsIcon } from "../icons/sidebar/accounts-icon";
 import { CustomersIcon } from "../icons/sidebar/customers-icon";
 import { DevIcon } from "../icons/sidebar/dev-icon";
@@ -9,7 +9,7 @@ import { ProductsIcon } from "../icons/sidebar/products-icon";
 import { ReportsIcon } from "../icons/sidebar/reports-icon";
 import { SettingsIcon } from "../icons/sidebar/settings-icon";
 import { useSidebarContext } from "../layout/layout-context";
-import { CollapseItems } from "./collapse-items";
+import HeroIcon from "../website/heroIcon";
 import { CompaniesDropdown } from "./companies-dropdown";
 import { SidebarItem } from "./sidebar-item";
 import { SidebarMenu } from "./sidebar-menu";
@@ -75,10 +75,20 @@ export const SidebarWrapper = () => {
                 icon={<ReportsIcon />}
                 href="/dashboard/about"
               />
-              <CollapseItems
-                icon={<HeroIcon name="NewspaperIcon" type="solid" className="text-[#969696] !w-6 !h-6" />}
-                items={["Posts", "Categorias"]}
-                title="Blog"
+            </SidebarMenu>
+
+            <SidebarMenu title="Blog">
+              <SidebarItem
+                isActive={pathname.startsWith("/dashboard/posts")}
+                title="Posts"
+                icon={<Newspaper className="text-[#969696] !w-6 !h-6" />}
+                href="/dashboard/posts"
+              />
+              <SidebarItem
+                isActive={pathname === "/dashboard/categories"}
+                title="Categorias"
+                icon={<ChartNoAxesGantt className="text-[#969696] !w-6 !h-6" />}
+                href="/dashboard/categories"
               />
             </SidebarMenu>
 

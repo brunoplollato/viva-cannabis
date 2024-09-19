@@ -1,10 +1,10 @@
-import { ServicesProps } from "@/types/DTO";
+import { ServicesService } from "@/services/services";
 import CustomCard from "./customCard";
 import { Section, SectionContent, SectionDescription, SectionHeader, SectionTitle } from "./section";
 
 
-export default function Services(props: { data: ServicesProps }) {
-  const { data } = props;
+export default async function Services() {
+  const services = await ServicesService.listAll();
   return (
     <Section>
       <SectionHeader>
@@ -16,7 +16,7 @@ export default function Services(props: { data: ServicesProps }) {
         </SectionDescription>
       </SectionHeader>
       <SectionContent className="flex-row gap-x-10 mt-20 items-stretch flex-wrap justify-center">
-        {data.map((item: any) => (
+        {services.map((item: any) => (
           <CustomCard
             key={item.id}
             icon={item.icon}
