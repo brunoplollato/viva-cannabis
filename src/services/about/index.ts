@@ -15,37 +15,28 @@ export class AboutService {
     return res
   }
   static async create(data: AboutProps) {
+    const loading = toast.loading('Carregando')
     const res: CreateResponse = await post('/about/create', {
       body: data
     })
-    if (res.error) {
-      toast.error(res.message)
-    } else {
-      toast.success(res.message)
-    }
+    toast.update(loading, {render: res.message, type: res.error ? 'error' : 'success', isLoading: false})
     return res
   }
   static async update(data: AboutProps, id: string) {
+    const loading = toast.loading('Carregando')
     const res: CreateResponse = await put(`/about/update`, {
       body: {
         ...data,
         id
       }
     })
-    if (res.error) {
-      toast.error(res.message)
-    } else {
-      toast.success(res.message)
-    }
+    toast.update(loading, {render: res.message, type: res.error ? 'error' : 'success', isLoading: false})
     return res
   }
   static async delete(id: string) {
+    const loading = toast.loading('Carregando')
     const res: CreateResponse = await del(`/about/delete?id=${id}`)
-    if (res.error) {
-      toast.error(res.message)
-    } else {
-      toast.success(res.message)
-    }
+    toast.update(loading, {render: res.message, type: res.error ? 'error' : 'success', isLoading: false})
     return res
   }
 }

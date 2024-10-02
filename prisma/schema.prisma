@@ -89,13 +89,13 @@ model Partners {
 model Configuration {
   id                   String    @id @unique @default(uuid())
   created_at           DateTime? @default(now())
-  created_by           String
-  title                String
-  description          String
-  tags                 String
-  social_medias        Json
-  phone                String
-  email                String
+  created_by           String?
+  title                String?
+  description          String?
+  tags                 String?
+  social_medias        Json?
+  phone                String?
+  email                String?
 }
 
 enum Role {

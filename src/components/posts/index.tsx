@@ -3,6 +3,7 @@ import { PostsService } from "@/services/posts";
 import { PostProps } from "@/types/DTO";
 import { Button, Chip, Input, Tooltip } from '@nextui-org/react';
 import { useSession } from "next-auth/react";
+import { useTheme as useNextTheme } from "next-themes";
 import Link from "next/link";
 import { ChangeEventHandler, useCallback, useState } from "react";
 import { EditIcon } from "../icons/table/edit-icon";
@@ -11,12 +12,13 @@ import { columns } from "./data";
 import { Delete } from "./delete";
 
 export const Posts = ({ data }: { data: PostProps[] }) => {
+  const { resolvedTheme } = useNextTheme();
   const { data: session } = useSession();
   const user = session?.user;
   const [posts, setPosts] = useState(data)
 
   const fetchPosts = useCallback(async () => {
-    const res: PostProps[] = await PostsService.listAll()
+    const res: PostProps[] = await PostsService.listAll(100, 0)
     setPosts(res)
   }, [])
 
@@ -108,7 +110,7 @@ export const Posts = ({ data }: { data: PostProps[] }) => {
               >
                 <button>
                   <Link href={`/dashboard/posts/edit/${post.slug}`}>
-                    <EditIcon size={20} fill="#222" />
+                    <EditIcon size={20} fill={resolvedTheme === "dark" ? "#aaa" : "#222"} />
                   </Link>
                 </button>
               </Tooltip>

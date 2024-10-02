@@ -2,6 +2,7 @@
 
 import { useLockedBody } from "@/hooks/useBodyLock";
 import { SessionProvider } from "next-auth/react";
+import { ThemeProvider, useTheme as useNextTheme } from "next-themes";
 import React, { Suspense } from "react";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export const Layout = ({ children }: Props) => {
+  const { resolvedTheme } = useNextTheme();
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [_, setLocked] = useLockedBody(false);
   const handleToggleSidebar = () => {
@@ -23,30 +25,33 @@ export const Layout = ({ children }: Props) => {
   };
 
   return (
-    <SessionProvider>
-      <SidebarContext.Provider
-        value={{
-          collapsed: sidebarOpen,
-          setCollapsed: handleToggleSidebar,
-        }}>
-        <section className='flex'>
-          <ToastContainer
-            position="top-center"
-            autoClose={5000}
-            hideProgressBar={false}
-            closeOnClick={true}
-            pauseOnHover={true}
-            draggable={false}
-            theme="light"
-          />
-          <SidebarWrapper />
-          <NavbarWrapper>
-            <Suspense fallback={<Loading />}>
-              {children}
-            </Suspense>
-          </NavbarWrapper>
-        </section>
-      </SidebarContext.Provider>
-    </SessionProvider>
+    <ThemeProvider attribute="class" defaultTheme="light">
+      <SessionProvider>
+        <SidebarContext.Provider
+          value={{
+            collapsed: sidebarOpen,
+            setCollapsed: handleToggleSidebar,
+          }}>
+          <section className='flex'>
+            <ToastContainer
+              position="top-center"
+              className={resolvedTheme === "dark" ? "text-white" : "text-black!"}
+              autoClose={5000}
+              hideProgressBar={false}
+              closeOnClick={true}
+              pauseOnHover={false}
+              draggable={false}
+              theme={resolvedTheme}
+            />
+            <SidebarWrapper />
+            <NavbarWrapper>
+              <Suspense fallback={<Loading />}>
+                {children}
+              </Suspense>
+            </NavbarWrapper>
+          </section>
+        </SidebarContext.Provider>
+      </SessionProvider>
+    </ThemeProvider>
   );
 };

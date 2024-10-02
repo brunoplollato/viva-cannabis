@@ -10,6 +10,7 @@ import {
   Tooltip,
   useDisclosure
 } from "@nextui-org/react";
+import { useTheme as useNextTheme } from "next-themes";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -37,6 +38,7 @@ const formSchema = z.object({
 })
 
 export const Edit = ({ partner, submit, title }: Props) => {
+  const { resolvedTheme } = useNextTheme();
   const [file, setFile] = useState<File | null>(null);
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { id, name, occupation, photo } = partner;
@@ -72,7 +74,7 @@ export const Edit = ({ partner, submit, title }: Props) => {
           <button
             onClick={onOpen}
           >
-            <EditIcon size={20} fill="#222" />
+            <EditIcon size={20} fill={resolvedTheme === "dark" ? "#aaa" : "#222"} />
           </button>
         </Tooltip>
         <Modal

@@ -99,9 +99,10 @@ export const SidebarWrapper = () => {
                 icon={<DevIcon />}
               />
               <SidebarItem
-                isActive={pathname === "/settings"}
+                isActive={pathname === "/dashboard/configuration"}
                 title="Configurações"
                 icon={<SettingsIcon />}
+                href="/dashboard/configuration"
               />
             </SidebarMenu>
           </div>

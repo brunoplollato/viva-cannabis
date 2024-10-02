@@ -2,6 +2,7 @@
 
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { PostsService } from "@/services/posts";
+import { CategoryProps } from "@/types/DTO";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Autocomplete, AutocompleteItem, Button, Chip, Input, Switch } from "@nextui-org/react";
 import { upload } from "@vercel/blob/client";
@@ -15,6 +16,7 @@ import { EditorProps } from 'react-draft-wysiwyg';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { useDropzone } from 'react-dropzone';
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { z } from "zod";
 const Editor = dynamic(
   () =>
@@ -35,7 +37,7 @@ const formSchema = z.object({
   userId: z.string(),
 })
 
-export default function NewPost() {
+export default function NewPost({ categories }: { categories: CategoryProps }) {
   const router = useRouter();
   const { data: session } = useSession();
   const user = session?.user;
@@ -89,12 +91,24 @@ export default function NewPost() {
   const isPublished = form.watch('published')
   const postTitle = form.watch('title')
 
+  function validateImageDimension(file: any) {
+    const img = new Image()
+    img.src = URL.createObjectURL(file);
+    img.onload = () => {
+      if (img.width / img.height !== 2.5) {
+        toast.error('A imagem deve ter 1800x720')
+      }
+    }
+    return null
+  }
+
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setFile(acceptedFiles[0])
     setCoverImage(URL.createObjectURL(acceptedFiles[0]))
   }, [])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    validator: validateImageDimension,
     onDrop,
     accept: {
       'image/png': ['.png'],
@@ -106,8 +120,8 @@ export default function NewPost() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (file && user) {
       const formData = await new FormData();
-      formData.append('photo', file, values.title);
-      const newBlob = await upload(`posts/${values.title}`, file, {
+      formData.append('photo', file, values.slug);
+      const newBlob = await upload(`posts/${values.slug}`, file, {
         access: 'public',
         handleUploadUrl: '/api/upload',
       });
@@ -244,15 +258,13 @@ export default function NewPost() {
                       label="Categoria"
                       placeholder="Selecione uma categoria"
                       value={form.getValues('categoryId')}
+                      items={categories as any}
                       onSelectionChange={(key) => {
                         if (key)
                           form.setValue('categoryId', key as string)
                       }}
                     >
-                      <AutocompleteItem key="0641c654-28a1-409a-a189-5b3aa8f82fef" value="technology">Technology</AutocompleteItem>
-                      <AutocompleteItem key="travel" value="2">Travel</AutocompleteItem>
-                      <AutocompleteItem key="food" value="3">Food</AutocompleteItem>
-                      <AutocompleteItem key="lifestyle" value="4">Lifestyle</AutocompleteItem>
+                      {(item: { id: string, title: string }) => <AutocompleteItem key={item.id} value={item.title}>{item.title}</AutocompleteItem>}
                     </Autocomplete>
                   </FormControl>
                 </FormItem>

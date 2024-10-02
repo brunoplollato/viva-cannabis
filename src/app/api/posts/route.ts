@@ -4,9 +4,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   const page = await req.nextUrl.searchParams.get('page')
+  const pageSize = await req.nextUrl.searchParams.get('pageSize')
   try {
     const res = await prisma.posts.findMany({
-      take: 10,
+      take: Number(pageSize) || 10,
       orderBy: [
         {
           created_at: 'desc'
@@ -29,7 +30,7 @@ export async function GET(req: NextRequest) {
     let myCursor = lastPostResult.id;
     if (page) {
       const res = await prisma.posts.findMany({
-        take: 10,
+        take: Number(pageSize) || 10,
         skip: Number(page) - 1,
         cursor: {
           id: myCursor

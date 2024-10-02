@@ -29,7 +29,7 @@ export default function Contact() {
   }
 
   return (
-    <Section className="flex 2xl:container">
+    <Section className="flex container w-full">
       <SectionHeader className="w-1/2 text-left items-start justify-start">
         <SectionTitle>
           Quero marcar uma consulta Médica

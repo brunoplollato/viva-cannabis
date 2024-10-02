@@ -13,6 +13,7 @@ import {
   Tooltip,
   useDisclosure,
 } from "@nextui-org/react";
+import { useTheme as useNextTheme } from "next-themes";
 import { useForm } from "react-hook-form";
 import InputMask from 'react-input-mask';
 import validator from "validator";
@@ -47,6 +48,7 @@ const roles = [
 ]
 
 export const Edit = ({ user, submit, title }: Props) => {
+  const { resolvedTheme } = useNextTheme();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { id, username, email, phone, role } = user;
   const form = useForm<z.infer<typeof formSchema>>({
@@ -75,7 +77,7 @@ export const Edit = ({ user, submit, title }: Props) => {
           <button
             onClick={onOpen}
           >
-            <EditIcon size={20} fill="#222" />
+            <EditIcon size={20} fill={resolvedTheme === "dark" ? "#aaa" : "#222"} />
           </button>
         </Tooltip>
         <Modal

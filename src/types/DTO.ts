@@ -45,6 +45,14 @@ export type PostProps = {
   updated_at?: Date;
 }
 
+export type CategoryProps = {
+  id?: string;
+  title: string;
+  description: string;
+  created_at?: Date;
+  updated_at?: Date;
+}
+
 export type UserProps = {
   id?: string;
   username: string;
@@ -64,4 +72,16 @@ export type PartnerProps = {
   occupation: string;
   created_at?: Date;
   updated_at?: Date;
+}
+
+export type ConfigurationProps = {
+  title: string;
+  description: string;
+  tags: string[];
+  phone: string;
+  email: string;
+  socialMedia: {
+    platform: "Twitter" | "Facebook" | "Instagram" | "LinkedIn" | "TikTok" | "Youtube";
+    url: string;
+  }[];
 }

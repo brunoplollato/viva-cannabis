@@ -9,9 +9,6 @@ export async function DELETE(request: NextRequest) {
   if (!session) { 
       return NextResponse.json({message: 'Usuário não está logado!'}, {status: 401})
   }
-  if (session.user && session.user.role !== 'ADMIN') {
-      return NextResponse.json({message: 'Usuário não tem permissão!'}, {status: 401})
-  }
   if (!id) { 
     return NextResponse.json({message: 'Id é obrigatório!'}, {status: 500})
   }

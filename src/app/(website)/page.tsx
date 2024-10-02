@@ -12,13 +12,10 @@ import { PostProps, ProductsProps } from "@/types/DTO";
 
 
 export default async function Home() {
-  const products: ProductsProps = await get('/products/')
-  const posts: PostProps = await get('/posts/')
-
   return (
     <main className="flex min-h-screen flex-col items-center">
       <Hero header="Seja um apoiador da" highlight="Cannabis Medicinal" body="Experimente uma vida livre de dores e dependência demedicamentos convencionais, conheça a Cannabis medicinal. São mais de 100 pacientes com acesso a uma melhor qualidade de vida." image="/banner-1.png" />
-      <Products data={products} />
+      {/* <Products /> */}
       <Donation />
       <About />
       <Team />
@@ -26,7 +23,7 @@ export default async function Home() {
       <Hero header="Seja um apoiador da" highlight="Cannabis Medicinal" body="Experimente uma vida livre de dores e dependência demedicamentos convencionais, conheça a Cannabis medicinal. São mais de 100 pacientes com acesso a uma melhor qualidade de vida." image="/banner-1.png" />
       <Contact />
       <WorkWithUs />
-      <Blog data={posts} />
+      <Blog />
     </main>
   );
 }

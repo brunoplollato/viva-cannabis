@@ -21,25 +21,19 @@ export class AuthService {
     return res
   }
   static async resendVerificationEmail(userId: string): Promise<Response> {
+    const loading = toast.loading('Carregando')
     const res: Response = await get(`/verify/new/?userId=${userId}`);
-    if (res.error) {
-      toast.error(res.message)
-    } else {
-      toast.success(res.message)
-    }
+    toast.update(loading, {render: res.message, type: res.error ? 'error' : 'success', isLoading: false})
     return res
   }
   static async recovery(email: string): Promise<Response> {
+    const loading = toast.loading('Carregando')
     const res: Response = await post(`/recovery`, {
       body: {
         email
       }
     });
-    if (res.error) {
-      toast.error(res.message)
-    } else {
-      toast.success(res.message)
-    }
+    toast.update(loading, {render: res.message, type: res.error ? 'error' : 'success', isLoading: false})
     return res
   }
   static async validateToken(token: string): Promise<Response> {
@@ -51,6 +45,7 @@ export class AuthService {
     return res
   }
   static async redefinePassword(token: string, password: string, confirmPassword: string): Promise<Response> {
+    const loading = toast.loading('Carregando')
     const res: Response = await put(`/users/redefine-password`, {
       body: {
         token,
@@ -59,11 +54,7 @@ export class AuthService {
         reset_password_token: ''
       }
     });
-    if (res.error) {
-      toast.error(res.message)
-    } else {
-      toast.success(res.message)
-    }
+    toast.update(loading, {render: res.message, type: res.error ? 'error' : 'success', isLoading: false})
     return res
   }
 }
